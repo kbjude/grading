@@ -31,6 +31,5 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn add jest
-      - run: which jest
       # run tests!
       - run: jest
