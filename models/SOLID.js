@@ -1,12 +1,13 @@
-//Bad
-Class Usersetting {
+//BAD
+// S
+class UserSetting {
     constructor(user) {
         this.user = user;
     }
 
     changeSettings(settings) {
         if(this.verifyCredentials()) {
-            //..
+            //....
         }
     }
 
@@ -15,38 +16,36 @@ Class Usersetting {
     }
 }
 
-// Good
+//GOOD
 class UserAuth {
-    constructor(user) {
+    constructor(user){
         this.user = user;
-        this.auth = new UserAuth(user);
     }
-
     verifyCredentials() {
-        // ...
+        //......
     }
 }
 
-class Usersetting {
-    constructor(user) {
-        this.user = user;
+class UserSetting {
+    constructor(user){
+        this.settings = user;
         this.auth = new UserAuth(user);
     }
 
-    changeSettings(settings) {
-        if (this.auth.verifyCredentials()) {
-            // ...
+    changeSettings(settings){
+        if(this.auth.verifyCredentials()){
+            // ....
         }
     }
 }
-end
 
+//O
 // BAD
 
-var iceCreamFavors=["chocolate", "vanilla", "caramel"];
+var iceCreamFlavors=["chocolate", "vanilla", "steven"];
 var iceCreamMaker={
     makeIceCream (flavor) {
-        if(iceCreamFavors.indexOf(flavor)>-1){
+        if(iceCreamFlavors.indexOf(flavor)>-1){
             console.log("Great success. You now have ice cream.")
         } else{
             console.log("Epic fail. No ice cream for you")
@@ -55,241 +54,18 @@ var iceCreamMaker={
 }
 export default iceCreamMaker;
 
-// GOOD
-var iceCreamFavors=["chocolate","vanilla"];
+//GOOD
+var iceCreamFlavors=["chocolate","vanilla"];
 var iceCreamMaker={
     makeIceCream(flavor) {
         if(iceCreamFlavors.indexOf(flavor)>-1){
-            console.log("Great Success. You now have ice cream.")
+            console.log("You have a cake")
         }else{
-            console.log("Epic fail. No ice cream for you")
+            console.log("Failed to get one")
         }
-    }
+    },
     addFlavor(flavor){
         iceCreamFlavors.push(flavor);
     }
-    export default iceCreamMaker;
 }
-
-// BAD
-class Rectangle {
-    constructor() {
-        this.width = 0;
-        this.height = 0;
-    }
-
-    setColor(color) {
-        // ...
-    }
-
-    render(area) {
-        // ...
-    }
-
-    setWidth(width) {
-        this.width = width;
-    }
-
-    setHeight(height) {
-        this.height = height;
-    }
-
-    getArea() {
-        return this.width * this.height;
-    }
-}
-
-class Square extends Rectangle {
-    setWidth(width) {
-        this.width = width;
-        this.height = width;
-    }
-
-    setHeight(height) {
-        this.width = height;
-        this.height = height;
-    }
-}
-
-function renderLargeRectangles(rectangles) {
-    rectangles.forEach((rectangle) => {
-        rectangle.setWidth(4);
-        rectangle.setHeight(5);
-        const area = rectangle.getArea(); //Bad: returns 25 for square should be 20
-        rectangle.render(area);
-    });
-}
-
-const rectangles = [new Rectangle(), new Rectangle(), new Square()];
-renderLargeRectangles(rectangles);
-
-// GOOD
-
-class Shape {
-    setColor(color) {
-        // ....
-    }
-
-    render(area) {
-        // .....
-    }
-}
-
-class Rectangle extends Shape {
-    constructor(width, height) {
-        super();
-        this.width = width;
-        this.height = height;
-    }
-
-    getArea() {
-        return this.width * this.height;
-    }
-}
-
-class Square extends Shape {
-    constructor(length) {
-        super();
-        this.length = length;
-    }
-
-    getArea() {
-        return this.length * this.length;
-    }
-}
-
-function renderLargeShapes(shapes) {
-    shapes.forEach((shape) => {
-        const area = shape.getArea();
-        shapes.render(area);
-    });
-}
-
-const shapes = [new Rectangle(4, 5), new Rectangle(4, 5), new Square(5)];
-renderLargeShapes(shapes);
-
-
-// Intetrface Segregation Principle
-
-// BAD
-
-class DOMTraverser {
-    this.settings = settings;
-    this.SecurityPolicyViolationEvent();
-}
-
-setup() {
-    this.rootNode = this.settings.rootNode;
-    this.animationModule.setup();
-}
-
-traverse() {
-    // ...
-}
-
-const $ = new DOMTraverser({ 
-    rootNode: document.getElementsByTagName('body'),
-    animationModule() {} //Most of the time, we dont need to animate when traversing
-});
-
-// GOOD
-
-class DOMTraverser {
-    constructor(settings) {
-        this.settings = settings;
-        this.options = settings.options;
-        this.setup();
-    }
-
-    setup() {
-        this.rootNode = this.settings.rootNode;
-        this.setupOptions();
-    }
-
-    setupOptions() {
-        if (this.options.animationModule) {
-            // ...
-        }
-    }
-
-    traverse() {
-        // ...
-    }
-}
-
-const $ = new DOMTraverser({
-    rootNode: document.getElementsByTagName('body'),
-    options: {
-        animationModule() {}
-    }
-});
-
-// Dependency inversion
-//BAD
-
-class InventoryRequester {
-    constructor() {
-        this.REQ_METHODS = ['HTTP'];
-    }
-
-    requestItem(item) {
-        //....
-    }
-}
-
-class InventoryTracker {
-    constructor(items) {
-        this.items = items;
-
-        //BAD: We have create a dependency on a specific request implementation. 
-        // We should just have requestitems depend on a request method: 'request'
-        this.requester = new InventoryRequester();
-    }
-
-    requestItems() { 
-        this.items.forEach((item) => {
-            this,requester.requestItem(item);
-        });
-    }
-}
-    const inventoryTrucker = new InventoryTracker(['apples', 'bananas']);
-    inventoryTracker.requestItems();
-
-    // GOOD 
-
-class InventoryTracker {
-    constructor(items, requester) {
-            this.items = items;
-            this.requester = requester;
-    }
-    requestItems() {
-        this.items.forEach((item) => {
-            this.requester.requestItem(item);
-        });
-    }
-}
-
-class InventoryRequesterV1 {
-    constructor() {
-        this.REQ_METHODS = ['HTTP'];
-    }
-
-    requestItems(item) {
-        // ...
-    }
-}
-
-class InventoryRequesterV2 {
-    constructor() {
-        this.REQ_METHODS = ['WS'];
-    }
-
-    requestItems(item) {
-        // ...
-    }
-}
-
-// By constructing our dependencies externally and injecting them, we can easily
-//substitute our request module for a fancy new one that uses websockets.
-const inventoryTracker = new InventoryTracker(['apples', 'bananas'], new InventoryRequesterV2());
-inventoryTracker.requestItems();
+export default iceCreamMaker
