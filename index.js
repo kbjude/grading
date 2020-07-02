@@ -1,7 +1,8 @@
 const Student = require('./models/student');
 const Mark = require('./models/mark');
+const Grader = require('./models/grader');
 
 const student = new Student("Isaiah","S6");
 const mark = new Mark("MTC",student,90);
-
-console.log(`${student.name} scored ${mark.computeScore()}`);
+const grader = new Grader(mark);
+console.log(`${student.name} scored ${grader.computeScore()}`);

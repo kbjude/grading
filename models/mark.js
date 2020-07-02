@@ -5,14 +5,6 @@ class Mark {
         this.mark = mark;
     }
 
-    computeScore() {
-        let score = "F";
-        if (this.mark > 80) {
-            score = "A";
-        }
-        return score;
-    }
-
     isValid() {
         let valid = true;
         if (this.student === null) {
