@@ -4,12 +4,23 @@
   "description": "Tutorial application",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "jest-coverage": "npm run test -- --coverage"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kbjude/grading.git"
   },
+  "dependencies": {},
+  "devDependencies": {
+    "coveralls": "^3.0.9",
+    "jest": "^25.1.0"
+  },
+  "jest": {
+    "collectCoverage": true
+  },
+
   "author": "Jude Kajura",
   "license": "ISC",
   "bugs": {
